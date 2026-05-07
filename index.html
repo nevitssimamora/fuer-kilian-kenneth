@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+        <title>Für Kilian 🥺</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+        <!-- EmailJS — sendet dir eine Benachrichtigung wenn jemand reingeht -->
+        <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+        <style>/* ─── RESET & VARIABLES ─────────────────────────────────────────── */*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; } :root { --paper: #f4ece0; --paper-warm: #ede3d3; --card-bg: rgba(255, 251, 245, 0.88); --card-border: rgba(54, 92, 117, 0.22); --card-shadow: 0 4px 32px rgba(110, 85, 55, 0.10), 0 1px 6px rgba(110, 85, 55, 0.06), inset 0 1px 0 rgba(255,255,255,0.75); --rose: #e0606f; --rose-soft: #f09aa4; --rose-pale: rgba(224, 96, 111, 0.10); --blue-msg: #0b84fe; --green-leaf: #6a9e40; --ink: #18110a; --ink-mid: #3a2e20; --ink-muted: #7a6a56; --ink-faint: #b8a890; --border: rgba(160, 140, 110, 0.18); --nav-bg: rgba(24, 22, 18, 0.86); --nav-h: 72px; --r-sm: 14px; --r-md: 20px; --r-lg: 28px; --r-xl: 36px; } html { scroll-behavior: smooth; } /* ─── PAPER TEXTURE ─────────────────────────────────────────────── */body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif; background-color: #e8dcc8; background-image: url("whitepapertextur.jpg"); background-size: cover; background-attachment: fixed; background-repeat: no-repeat; background-position: center center; color: var(--ink); overflow-x: hidden; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; } /* Gate gets same paper bg */#gate { background-color: #e8dcc8; background-image: url("whitepapertextur.jpg"); background-size: cover; background-position: center center; background-repeat: no-repeat; } /* ─── GATE ──────────────────────────────────────────────────────── */#gate { position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; text-align: center; } .gate-logo { width: 76px; height: 76px; object-fit: contain; mix-blend-mode: multiply; margin-bottom: 28px; animation: gentlePulse 3s ease-in-out infinite; } .gate-title { font-size: clamp(2rem, 7vw, 3rem); font-weight: 800; letter-spacing: -1.5px; color: var(--ink); margin-bottom: 8px; line-height: 1.1; } .gate-sub { font-size: 15px; color: var(--ink-muted); font-weight: 400; margin-bottom: 36px; line-height: 1.65; } .gate-form { width: 100%; max-width: 340px; } .gate-input { width: 100%; padding: 16px 20px; background: linear-gradient(90deg, #ECE9E6, #FFFFFF); border: 1.5px solid var(--card-border); border-radius: var(--r-md); font-size: 16px; font-family: inherit; color: var(--ink); outline: none; transition: 1.5px solid var(--card-border); display: block; margin-bottom: 10px; backdrop-filter: blur(10px); box-shadow: inset 0 1px 3px rgba(0,0,0,0.04); } .gate-input:focus { border-color: var(--rose-soft); background: #fff; } .gate-input::placeholder { color: var(--ink-faint); } .gate-btn { width: 100%; padding: 16px; background: var(--ink); color: #fff; border: none; border-radius: var(--r-md); font-size: 16px; font-weight: 600; font-family: inherit; cursor: pointer; letter-spacing: -0.3px; transition: opacity 0.2s, transform 0.1s; display: block; margin-top: 4px; } .gate-btn:hover { opacity: 0.82; } .gate-btn:active { transform: scale(0.98); } .gate-error { font-size: 13px; color: var(--rose); margin-top: 12px; min-height: 18px; } .gate-hint { font-size: 12px; color: var(--ink-faint); margin-top: 28px; line-height: 1.6; } /* ─── EXPIRED ───────────────────────────────────────────────────── */#expired { display: none; position: fixed; inset: 0; z-index: 9998; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px; background-color: var(--paper); } #expired .exp-icon { font-size: 72px; margin-bottom: 28px; animation: gentlePulse 3s ease-in-out infinite; } #expired h2 { font-size: clamp(1.8rem, 6vw, 2.6rem); font-weight: 800; letter-spacing: -1.5px; margin-bottom: 16px; color: var(--ink); } #expired p { font-size: 17px; color: var(--ink-muted); line-height: 1.75; max-width: 320px; margin: 0 auto; } #expired .exp-note { font-size: 13px; color: var(--ink-faint); margin-top: 32px; } /* ─── TIMER PILL ────────────────────────────────────────────────── */#timerPill { position: fixed; top: 14px; right: 16px; background: rgba(24, 22, 18, 0.82); backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%); color: #fff; border-radius: 100px; padding: 7px 14px; font-size: 11px; font-weight: 500; letter-spacing: 1.5px; z-index: 500; display: none; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 4px 16px rgba(0,0,0,0.2); } #timerPill span { color: #ffb3bb; } /* ─── FLOATING HEARTS ───────────────────────────────────────────── */#heartsCanvas { position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; } .fheart { position: absolute; bottom: -40px; opacity: 0; user-select: none; animation: floatHeart linear infinite; } @keyframes floatHeart { 0% {  transform: translateY(0) scale(1) rotate(-5deg);  opacity: 0.6; }  50% {  transform: translateY(-54vh) scale(0.85) rotate(5deg);  opacity: 0.4; }  100% {  transform: translateY(-108vh) scale(0.6) rotate(-8deg);  opacity: 0; } } /* ─── MUSIC PLAYER ──────────────────────────────────────────────── */#musicPanel { position: fixed; left: 50%; bottom: calc(var(--nav-h) + 20px); transform: translateX(-50%) translateY(20px); background: rgba(24, 22, 18, 0.90); backdrop-filter: blur(24px) saturate(200%); -webkit-backdrop-filter: blur(24px) saturate(200%); border-radius: var(--r-lg); padding: 18px 22px; width: min(340px, 90vw); border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 16px 48px rgba(0,0,0,0.28); z-index: 200; display: none; opacity: 0; transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); } #musicPanel.open { display: block; opacity: 1; transform: translateX(-50%) translateY(0); } .mp-track { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; } .mp-art { width: 44px; height: 44px; border-radius: 10px; background: linear-gradient(135deg, var(--rose) 0%, #f09aa4 100%); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 20px; } .mp-info { flex: 1; min-width: 0; } .mp-title { font-size: 14px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .mp-artist { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 2px; } .mp-controls { display: flex; align-items: center; gap: 16px; } .mp-btn { background: none; border: none; color: #fff; cursor: pointer; padding: 8px; border-radius: 50%; font-size: 20px; transition: opacity 0.15s, transform 0.1s; display: flex; align-items: center; } .mp-btn:hover { opacity: 0.7; } .mp-btn:active { transform: scale(0.9); } .mp-btn.main-btn { width: 40px; height: 40px; background: #fff; color: var(--ink); font-size: 16px; margin: 0 4px; } .mp-volume { display: flex; align-items: center; gap: 10px; margin-top: 14px; } .mp-volume-icon { font-size: 14px; color: rgba(255,255,255,0.5); } .mp-slider { flex: 1; -webkit-appearance: none; appearance: none; height: 3px; border-radius: 2px; background: rgba(255,255,255,0.25); outline: none; cursor: pointer; } .mp-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #fff; cursor: pointer; } /* ─── BOTTOM NAV ────────────────────────────────────────────────── */#bottomNav { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); background: var(--nav-bg); backdrop-filter: blur(24px) saturate(200%); -webkit-backdrop-filter: blur(24px) saturate(200%); border-radius: 26px; padding: 10px 8px; display: none; gap: 2px; z-index: 100; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 8px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18); align-items: center; } .nav-item { display: flex; flex-direction: column; align-items: center; padding: 8px 14px; border-radius: 18px; cursor: pointer; transition: background 0.2s; border: none; background: none; color: rgba(255,255,255,0.5); font-family: inherit; gap: 4px; min-width: 58px; } .nav-item:hover { background: rgba(255,255,255,0.08); } .nav-item.active { color: #fff; background: rgba(255,255,255,0.12); } .nav-icon { font-size: 20px; line-height: 1; } .nav-label { font-size: 10px; font-weight: 500; letter-spacing: 0.3px; } .nav-item.music-active .nav-icon { color: var(--rose-soft); } /* ─── MAIN ──────────────────────────────────────────────────────── */#mainContent { display: none; position: relative; z-index: 2; padding-bottom: calc(var(--nav-h) + 28px); } /* ─── HERO ──────────────────────────────────────────────────────── */#home { min-height: 100svh; min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-start; padding: 60px 28px 80px; max-width: 680px; margin: 0 auto; position: relative; } .hero-top { position: absolute; top: 0; left: 28px; right: 28px; display: flex; align-items: center; justify-content: space-between; padding: 20px 0; } .hero-logo { width: 34px; height: 34px; object-fit: contain; mix-blend-mode: multiply; } .hero-top-label { font-size: 12px; font-weight: 500; color: var(--ink-muted); letter-spacing: 0.5px; } .hero-eyebrow { font-size: 13px; font-weight: 500; color: var(--ink-muted); margin-bottom: 14px; letter-spacing: 0.3px; } .hero-title { font-size: clamp(3.4rem, 12vw, 5.8rem); font-weight: 800; line-height: 1.0; letter-spacing: -3px; color: var(--ink); margin-bottom: 22px; } .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(224, 96, 111, 0.12); border: 1px solid rgba(224, 96, 111, 0.22); border-radius: 100px; padding: 8px 16px; font-size: 13px; font-weight: 500; color: var(--rose); margin-bottom: 24px; backdrop-filter: blur(8px); } .hero-pill-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rose); } .hero-desc { font-size: clamp(1rem, 2.8vw, 1.2rem); font-weight: 400; color: var(--ink-mid); line-height: 1.7; max-width: 480px; } .scroll-hint { position: absolute; bottom: 32px; right: 28px; font-size: 12px; color: var(--ink-faint); letter-spacing: 1px; display: flex; flex-direction: column; align-items: center; gap: 6px; } .scroll-arrow { animation: scrollBounce 1.8s ease-in-out infinite; } @keyframes scrollBounce { 0%, 100% {  transform: translateY(0); }  50% {  transform: translateY(5px); } } /* ─── SECTIONS SHARED ───────────────────────────────────────────── */.divider { height: 0.5px; background: var(--border); max-width: 680px; margin: 0 auto; } .section { max-width: 680px; margin: 0 auto; padding: 72px 28px; } .sec-tag { font-size: 11px; font-weight: 600; color: var(--ink-faint); letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 28px; display: flex; align-items: center; gap: 10px; } .sec-tag::after { content: ''; flex: 1; height: 0.5px; background: var(--border); display: block; max-width: 80px; } .sec-heading { font-size: clamp(2rem, 6vw, 3rem); font-weight: 800; letter-spacing: -1.5px; line-height: 1.12; color: var(--ink); margin-bottom: 20px; } .sec-body { font-size: 17px; line-height: 1.85; color: var(--ink-mid); font-weight: 400; } /* ─── iOS CARD ──────────────────────────────────────────────────── */.ios-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--r-lg); box-shadow: var(--card-shadow); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 28px; margin-top: 28px; } .ios-card .big-quote { font-size: clamp(1.1rem, 3.2vw, 1.4rem); font-weight: 700; color: var(--rose); letter-spacing: -0.5px; line-height: 1.5; margin-bottom: 14px; font-style: italic; } .ios-card p { font-size: 16px; line-height: 1.8; color: var(--ink-mid); } /* ─── CHAT ──────────────────────────────────────────────────────── */.chat-wrap { padding: 72px 28px; background: linear-gradient(180deg, transparent 0%, rgba(232,242,252,0.35) 100%); } .chat-inner { max-width: 680px; margin: 0 auto; } .iphone-frame { width: 260px; margin: 32px auto 0; background: #1c1c1e; border-radius: 44px; overflow: hidden; box-shadow: 0 28px 72px rgba(0,0,0,0.22), 0 0 0 7px #2a2a2c, 0 0 0 8px #1c1c1e; } .iphone-frame img { width: 100%; display: block; } .chat-placeholder { background: rgba(30,30,35,0.92); color: rgba(255,255,255,0.35); font-size: 13px; text-align: center; padding: 60px 20px; line-height: 1.6; } .chat-caption { text-align: center; font-size: 13px; color: var(--ink-muted); margin-top: 16px; font-weight: 500; } /* ─── PHOTOS ─────────────────────────────────────────────────────── */.photos-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 28px; } .photo-item { border-radius: var(--r-md); overflow: hidden; aspect-ratio: 3/4; position: relative; box-shadow: var(--card-shadow); border: 1px solid var(--card-border); } .photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; } .photo-label { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(20,15,10,0.55)); padding: 24px 14px 14px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.9); letter-spacing: 0.2px; } /* ─── LOGO / SYMBOL ─────────────────────────────────────────────── */.logo-section { padding: 80px 28px; text-align: center; background: linear-gradient(180deg, transparent, rgba(240,232,248,0.3), transparent); } .logo-section-inner { max-width: 680px; margin: 0 auto; } .logo-big { width: 120px; height: 120px; object-fit: contain; mix-blend-mode: multiply; animation: gentlePulse 3.5s ease-in-out infinite; margin: 20px auto; display: block; } .logo-tagline { font-size: clamp(1.5rem, 5vw, 2.2rem); font-weight: 800; letter-spacing: -1px; color: var(--ink); margin-top: 14px; } .logo-sub { font-size: 15px; color: var(--ink-muted); margin-top: 10px; letter-spacing: 1px; } /* ─── RESOLUTIONS ───────────────────────────────────────────────── */.res-list { margin-top: 12px; } .res-item { display: flex; gap: 18px; padding: 22px 0; border-bottom: 0.5px solid var(--border); align-items: flex-start; transition: opacity 0.2s; } .res-item:last-child { border-bottom: none; } .res-emoji { font-size: 24px; flex-shrink: 0; margin-top: 2px; } .res-title { font-size: 16px; font-weight: 700; color: var(--ink); letter-spacing: -0.3px; margin-bottom: 5px; } .res-desc { font-size: 15px; line-height: 1.65; color: var(--ink-muted); } /* ─── MAIBAUM FLIP CARD ─────────────────────────────────────────── */#maibaum { padding: 72px 28px; } .maibaum-inner { max-width: 680px; margin: 0 auto; text-align: center; } .maibaum-hint { font-size: 13px; color: var(--ink-muted); margin: 20px 0 28px; display: flex; align-items: center; justify-content: center; gap: 8px; } .maibaum-hint-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rose); opacity: 0.6; animation: hint-pulse 1.8s ease-in-out infinite; } @keyframes hint-pulse { 0%, 100% {  transform: scale(1);  opacity: 0.6; }  50% {  transform: scale(1.4);  opacity: 1; } } .flip-wrap { width: 100%; max-width: 360px; margin: 0 auto; aspect-ratio: 1/1; perspective: 1200px; cursor: pointer; position: relative; } .flip-inner { width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.85s cubic-bezier(0.4, 0, 0.2, 1); position: relative; } .flip-wrap.flipped .flip-inner { transform: rotateY(180deg); } .flip-front, .flip-back { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: var(--r-xl); overflow: hidden; } .flip-front { background: #f5fbee; border: 1px solid rgba(100,160,60,0.18); box-shadow: var(--card-shadow); display: flex; align-items: center; justify-content: center; padding: 20px; } .flip-front img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; } .flip-back { transform: rotateY(180deg); background: #000; } .flip-back video { width: 100%; height: 100%; object-fit: cover; display: block; } .flip-back-overlay { position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.55); backdrop-filter: blur(8px); color: rgba(255,255,255,0.9); font-size: 12px; font-weight: 500; border-radius: 100px; padding: 6px 14px; white-space: nowrap; } .maibaum-caption { font-size: 14px; color: var(--green-leaf); margin-top: 20px; font-weight: 500; } /* ─── BEHIND THE SCENES ─────────────────────────────────────────── */#bts { padding: 72px 28px; } .bts-inner { max-width: 680px; margin: 0 auto; } .bts-grid { display: flex; flex-direction: column; gap: 24px; margin-top: 32px; } .bts-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--r-lg); box-shadow: var(--card-shadow); overflow: hidden; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); } .bts-video { width: 100%; display: block; border-radius: var(--r-lg) var(--r-lg) 0 0; max-height: 340px; object-fit: cover; background: #111; } .bts-caption { padding: 18px 22px 22px; } .bts-caption h4 { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 6px; letter-spacing: -0.3px; } .bts-caption p { font-size: 14px; color: var(--ink-muted); line-height: 1.65; } .bts-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(224, 96, 111, 0.1); border: 1px solid rgba(224,96,111,0.2); color: var(--rose); font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; border-radius: 100px; padding: 4px 10px; margin-bottom: 12px; } /* ─── CTA ───────────────────────────────────────────────────────── */#contact { padding: 90px 28px 80px; max-width: 680px; margin: 0 auto; } .cta-heading { font-size: clamp(2.8rem, 9vw, 4.5rem); font-weight: 800; letter-spacing: -3px; line-height: 1.0; color: var(--ink); margin-bottom: 20px; } .cta-sub { font-size: 17px; color: var(--ink-muted); margin-bottom: 44px; line-height: 1.7; max-width: 400px; } .imessage-btn { display: inline-flex; align-items: center; gap: 13px; background: var(--blue-msg); color: #fff; text-decoration: none; border-radius: 100px; padding: 18px 36px; font-size: 17px; font-weight: 600; font-family: inherit; letter-spacing: -0.3px; transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s; box-shadow: 0 8px 32px rgba(11,132,254,0.32); } .imessage-btn:hover { opacity: 0.88; transform: translateY(-2px); box-shadow: 0 14px 40px rgba(11,132,254,0.38); } .imessage-btn:active { transform: scale(0.97); } .imessage-btn svg { flex-shrink: 0; } .cta-note { font-size: 13px; color: var(--ink-faint); margin-top: 20px; } /* ─── FOOTER ────────────────────────────────────────────────────── */footer { border-top: 0.5px solid var(--border); padding: 36px 28px; display: flex; align-items: center; justify-content: center; gap: 12px; position: relative; z-index: 2; max-width: 680px; margin: 0 auto; } footer img { width: 26px; height: 26px; object-fit: contain; opacity: 0.35; mix-blend-mode: multiply; } footer p { font-size: 13px; color: var(--ink-faint); } /* ─── ANIMATIONS ────────────────────────────────────────────────── */@keyframes gentlePulse { 0%, 100% {  transform: scale(1); }  50% {  transform: scale(1.06); } } @keyframes fadeUp { from {  opacity: 0;  transform: translateY(32px); }  to {  opacity: 1;  transform: translateY(0); } } .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); } .reveal.visible { opacity: 1; transform: translateY(0); } .reveal-delay-1 { transition-delay: 0.1s; } .reveal-delay-2 { transition-delay: 0.2s; } .reveal-delay-3 { transition-delay: 0.3s; } /* ─── RESPONSIVE ────────────────────────────────────────────────── */@media (max-width: 480px) { .photos-row {  grid-template-columns: 1fr; }  .photo-item {  aspect-ratio: 4/3; }  .hero-title {  letter-spacing: -2px; }  .cta-heading {  letter-spacing: -2px; }  .nav-item {  min-width: 50px;  padding: 8px 10px; }  .nav-label {  font-size: 9px; }  .flip-wrap {  max-width: 290px; } } @media (prefers-reduced-motion: reduce) { *, *::before, *::after {  animation-duration: 0.01ms !important;  transition-duration: 0.01ms !important; } }</style>
+    </head>
+    <body>
+        <!-- ── HEARTS ─────────────────────────────────────────────────────── -->
+        <div id="heartsCanvas"></div>
+        <!-- ── GATE ───────────────────────────────────────────────────────── -->
+        <div id="gate">
+            <img src="LOGO.png" alt="Logo" class="gate-logo">
+            <h1 class="gate-title">Hey, Kilian 🥺</h1>
+            <p class="gate-sub" style="color: #a48359;">Diese Seite wurde nur für Dich gemacht.<br>Gib einf deine E-Mail-Adresse ein, bevor du eintrittst.</p>
+            <div class="gate-form">
+                <input type="email" class="gate-input" id="emailInput" placeholder="deine@email.com" autocomplete="email" style="background: linear-gradient(90deg, #ECE9E6, #FFFFFF);">
+                <button class="gate-btn" onclick="checkAccess()">Weiter &rarr;</button>
+                <p class="gate-error" id="gateError"></p>
+            </div>
+            <p class="gate-hint" style="font-family: 'Inter', sans-serif; color: #6e6f76;">Diese Seite ist privat und läuft<br>48 Stunden nach dem ersten Öffnen ab.</p>
+        </div>
+        <!-- ── EXPIRED ─────────────────────────────────────────────────────── -->
+        <div id="expired">
+            <div class="exp-icon">💔</div>
+            <h2>Diese Seite ist abgelaufen.</h2>
+            <p>Der Moment war real.<br>Jedes Wort kam von Herzen.<br>Die Gefühle bestehen weiter. ♥</p>
+            <p class="exp-note">48 Stunden · nur für dich</p>
+        </div>
+        <!-- ── TIMER ───────────────────────────────────────────────────────── -->
+        <div id="timerPill">Läuft ab in <span id="timerText">48:00:00</span>
+        </div>
+        <!-- ── MUSIC PANEL ─────────────────────────────────────────────────── -->
+        <div id="musicPanel">
+            <div class="mp-track">
+                <div class="mp-art">🎵</div>
+                <div class="mp-info">
+                    <div class="mp-title">Stay</div>
+                    <div class="mp-artist">Ardhito Pramono</div>
+                </div>
+            </div>
+            <div class="mp-controls">
+                <button class="mp-btn" onclick="seekMusic(-15)" title="−15s">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 5V2L8 6l4 4V7a5 5 0 1 1-5 5H5a7 7 0 1 0 7-7Z" fill="currentColor"/>
+                        <text x="6" y="15" font-size="7" fill="currentColor" font-family="sans-serif">15</text>
+                    </svg>
+                </button>
+                <button class="mp-btn main-btn" id="playBtn" onclick="toggleMusic()">▶</button>
+                <button class="mp-btn" onclick="seekMusic(15)" title="+15s">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 5V2l4 4-4 4V7a5 5 0 1 0 5 5h2a7 7 0 1 1-7-7Z" fill="currentColor"/>
+                        <text x="9" y="15" font-size="7" fill="currentColor" font-family="sans-serif">15</text>
+                    </svg>
+                </button>
+            </div>
+            <div class="mp-volume">
+                <span class="mp-volume-icon">🔈</span>
+                <input type="range" class="mp-slider" id="volSlider" min="0" max="1" step="0.05" value="0.65" oninput="setVolume(this.value)">
+                <span class="mp-volume-icon">🔊</span>
+            </div>
+        </div>
+        <audio id="bgMusic" src="ardhitostay.mp3" preload="none" loop></audio>
+        <!-- ── BOTTOM NAV ──────────────────────────────────────────────────── -->
+        <nav id="bottomNav">
+            <button class="nav-item active" onclick="navTo('home',this)">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">Home</span>
+            </button>
+            <button class="nav-item" onclick="navTo('maibaum',this)">
+                <span class="nav-icon">🌳</span>
+                <span class="nav-label">Maibaum</span>
+            </button>
+            <button class="nav-item" onclick="navTo('bts',this)">
+                <span class="nav-icon">🎬</span>
+                <span class="nav-label">Backstage</span>
+            </button>
+            <button class="nav-item" id="musicNavItem" onclick="toggleMusicPanel(this)">
+                <span class="nav-icon">🎵</span>
+                <span class="nav-label">Musik</span>
+            </button>
+            <button class="nav-item" onclick="navTo('contact',this)">
+                <span class="nav-icon">💌</span>
+                <span class="nav-label">Kontakt</span>
+            </button>
+        </nav>
+        <!-- ════════════════════════════════════════════════════════════════ -->
+        <!-- MAIN CONTENT                                                     -->
+        <!-- ════════════════════════════════════════════════════════════════ -->
+        <div id="mainContent">
+            <!-- HERO ─────────────────────────────────────────────────────── -->
+            <section id="home" class="hero" style="min-height:100svh;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:60px 28px 80px;max-width:680px;margin:0 auto;position:relative;">
+                <div class="hero-top">
+                    <img src="LOGO.png" alt="Logo" class="hero-logo">
+                    <span class="hero-top-label">mein liebster Kölner</span>
+                </div>
+                <p class="hero-eyebrow reveal">Eine Seite — nur für dich.</p>
+                <h1 class="hero-title reveal reveal-delay-1">Für<br>Kilian 🥺</h1>
+                <div class="hero-pill reveal reveal-delay-2">
+                    <span class="hero-pill-dot"></span>gebaut seit 05.05.2026
+                </div>
+                <p class="hero-desc reveal reveal-delay-3">Es gibt etwas Wichtiges, das ich dir sagen möchte — etwas, das ich schon lange in mir trage. Bitte lies bis zum Ende. 🙏</p>
+                <div class="scroll-hint">
+                    <span class="scroll-arrow">↓</span>
+                    <span style="font-size:10px;letter-spacing:1.5px;">SCROLL</span>
+                </div>
+            </section>
+            <div class="divider"></div>
+            <!-- 01 APOLOGY ───────────────────────────────────────────────── -->
+            <section class="section reveal">
+                <p class="sec-tag">01 — Die Entschuldigung</p>
+                <h2 class="sec-heading">Es tut mir so leid, Kilian 😔</h2>
+                <p class="sec-body">Ich habe dich <strike>pervers</strike> genannt. Das war falsch. Das war nicht fair — dafür stehe ich gerade. Du hast dich von Anfang an wirklich bemüht, und ich habe das mit Worten beantwortet, die dir leider wehgetan haben. Das bereue ich wirklich, aus tiefstem Herzen.</p>
+                <div class="ios-card reveal reveal-delay-1">
+                    <p class="big-quote">„Du hast dir so viel Mühe gegeben — und ich habe das nicht gesehen." 💔</p>
+                    <p>Du hast es verdient, mit Respekt und Wärme behandelt zu werden. Ich habe das Gegenteil getan. Und dafür schäme ich mich wirklich.</p>
+                </div>
+            </section>
+            <div class="divider"></div>
+            <!-- 02 CONFESSION ────────────────────────────────────────────── -->
+            <section class="section reveal">
+                <p class="sec-tag">02 — Was ich zugeben möchte</p>
+                <h2 class="sec-heading">denke jeden Tag an dich 🫶</h2>
+                <p class="sec-body">Seit wir keinen Kontakt mehr haben, vergeht kein einziger Tag, an dem du nicht in meinen Gedanken bist. Jeden Tag vermisse ich dich mehr. Ich kann dich nicht aus meinem Kopf bekommen — und ich glaube, das sagt alles.</p>
+                <div class="ios-card reveal reveal-delay-1" style="background:rgba(232,104,122,0.07);border-color:rgba(232,104,122,0.15);">
+                    <p class="sec-body" style="font-size:16px;">Du bist nicht wie andere. Du bist besonders — in einer Art, die ich nicht ignorieren kann. Und das ist kein leeres Kompliment. Das ist die Wahrheit, auch wenn es mir schwerfällt, sie so direkt auszusprechen. 🌸</p>
+                </div>
+            </section>
+            <div class="divider"></div>
+            <!-- 03 CHAT / MEMORY ─────────────────────────────────────────── -->
+            <div class="chat-wrap reveal">
+                <div class="chat-inner">
+                    <p class="sec-tag">03 — Wo alles begann</p>
+                    <h2 class="sec-heading" style="font-size:clamp(1.6rem,5vw,2.5rem);">Di. 30. September 2025 📱</h2>
+                    <p class="sec-body">Der Tag, an dem du mir das erste Mal geschrieben hast. Ich erinnere mich noch genau daran — als wäre es gestern.</p>
+                    <div class="iphone-frame reveal reveal-delay-1">
+                        <img src="chat-screenshot.PNG" alt="Erster Chat" style="width:100%; border-radius:inherit;">
+                        </div>
+                    </div>
+                    <p class="chat-caption reveal reveal-delay-2">22:07 Uhr · iMessage · der erste Abend 💙</p>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <!-- 03b FLOATING MEMORIES ───────────────────────────────────── -->
+            <div class="floating-memories-section reveal" style="padding: 80px 20px; overflow: hidden; position: relative; background: transparent;">
+                <!-- Intro text -->
+                <div style="max-width: 600px; margin: 0 auto 50px auto; text-align: center;">
+                    <p class="sec-tag" style="justify-content:center;">03b — Erinnerungen</p>
+                    <h2 class="sec-heading" style="font-size:clamp(1.6rem,5vw,2.4rem); text-align:center;">Nostalgische Erinnerungen 💌</h2>
+                    <p class="sec-body" style="font-style: italic; line-height: 1.8; color: #555; text-align:center;">
+                        Deine Worte haben mich tief geprägt, aufgerichtet, manchmal innehalten lassen und mir aber öfter Schmetterlinge im Bauch beschert.
+                        <br><br>
+                        <span style="font-family: serif; font-size: 1.1rem; color: #222; display: block; padding: 15px; background: rgba(255,255,255,0.4); border-radius: 20px;">
+                            "allem Zeit geben" · "bleibt doch zu Hause" · "bin für dich da" · "ehrlich bist" · "Hab vertrauen" · "Nähe spüren" · "Schatz" · "An dich denken"
+                        </span>
+                    </p>
+                </div>
+                <!-- Floating screenshots — tap to enlarge -->
+                <div class="floating-container">
+                    <div class="float-item p1" onclick="this.classList.toggle('active')"><img src="chat-1.PNG" alt="Chat Erinnerung 1"></div>
+                    <div class="float-item p2" onclick="this.classList.toggle('active')"><img src="chat-2.PNG" alt="Chat Erinnerung 2"></div>
+                    <div class="float-item p3" onclick="this.classList.toggle('active')"><img src="chat-3.PNG" alt="Chat Erinnerung 3"></div>
+                    <div class="float-item p4" onclick="this.classList.toggle('active')"><img src="chat-4.PNG" alt="Chat Erinnerung 4"></div>
+                    <div class="float-item p5" onclick="this.classList.toggle('active')"><img src="chat-5.PNG" alt="Chat Erinnerung 5"></div>
+                    <div class="float-item p6" onclick="this.classList.toggle('active')"><img src="chat-6.PNG" alt="Chat Erinnerung 6"></div>
+                    <div class="float-item p7" onclick="this.classList.toggle('active')"><img src="chat-7.PNG" alt="Chat Erinnerung 7"></div>
+                    <div class="float-item p8" onclick="this.classList.toggle('active')"><img src="chat-8.PNG" alt="Chat Erinnerung 8"></div>
+                    <div class="float-item p9" onclick="this.classList.toggle('active')"><img src="chat-9.PNG" alt="Chat Erinnerung 9"></div>
+                    <div class="float-item p10" onclick="this.classList.toggle('active')"><img src="chat-10.PNG" alt="Chat Erinnerung 10"></div>
+                    <div class="float-item p11" onclick="this.classList.toggle('active')"><img src="chat-11.PNG" alt="Chat Erinnerung 11"></div>
+                    <div class="float-item p12" onclick="this.classList.toggle('active')"><img src="chat-12.PNG" alt="Chat Erinnerung 12"></div>
+                </div>
+                <p class="chat-caption" style="margin-top: 20px;">Tippe auf ein Foto, um es zu vergrößern 💙</p>
+            </div>
+            <style>
+                .floating-container { perspective: 1000px; position: relative; height: 650px; max-width: 1000px; margin: 0 auto; }
+                .float-item { position: absolute; width: 110px; cursor: pointer; transition: all 0.5s ease; z-index: 1; animation: floaty 4s ease-in-out infinite; }
+                .float-item img { width: 100%; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.15); border: 3px solid white; }
+                @keyframes floaty {
+                    0%, 100% { transform: translateY(0px) rotate(0deg); }
+                    50% { transform: translateY(-20px) rotate(3deg); }
+                }
+                .p1  { top: 5%;  left: 5%;   animation-delay: 0s; }
+                .p2  { top: 12%; left: 35%;  animation-delay: 1s; }
+                .p3  { top: 3%;  left: 70%;  animation-delay: 2s; }
+                .p4  { top: 30%; left: 15%;  animation-delay: 0.5s; }
+                .p5  { top: 35%; left: 45%;  animation-delay: 1.5s; }
+                .p6  { top: 25%; left: 80%;  animation-delay: 2.5s; }
+                .p7  { top: 55%; left: 10%;  animation-delay: 1.2s; }
+                .p8  { top: 60%; left: 40%;  animation-delay: 0.8s; }
+                .p9  { top: 50%; left: 75%;  animation-delay: 2.2s; }
+                .p10 { top: 80%; left: 20%;  animation-delay: 1.7s; }
+                .p11 { top: 85%; left: 55%;  animation-delay: 0.3s; }
+                .p12 { top: 75%; left: 85%;  animation-delay: 1.9s; }
+                /* Expanded / lightbox state */
+                .float-item.active { z-index: 10000 !important; position: fixed !important; top: 50% !important; left: 50% !important; width: 80% !important; max-width: 320px !important; transform: translate(-50%, -50%) !important; animation: none; }
+                .float-item.active::after { content: ''; position: fixed; top: -1000%; left: -1000%; width: 5000px; height: 5000px; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: -1; }
+            </style>
+            <div class="divider"></div>
+            <!-- 04 PHOTOS ────────────────────────────────────────────────── -->
+            <section class="section reveal">
+                <p class="sec-tag">04 — Wir 🤍</p>
+                <h2 class="sec-heading" style="font-size:clamp(1.6rem,5vw,2.4rem);">Meine liebsten Fotos von uns</h2>
+                <div class="photos-row">
+                    <div class="photo-item reveal reveal-delay-1">
+                        <img src="Baby.jpg" alt="Kilian">
+                        <div class="photo-label">Mein Lieblingsfoto von dir 🤍</div>
+                    </div>
+                    <div class="photo-item reveal reveal-delay-2">
+                        <img src="Me.jpg" alt="Ich">
+                        <div class="photo-label">Dein Lieblingsfoto von mir (vllt) 🥺</div>
+                    </div>
+                </div>
+            </section>
+            <!-- 05 SYMBOL ────────────────────────────────────────────────── -->
+            <div class="logo-section reveal">
+                <div class="logo-section-inner">
+                    <p class="sec-tag" style="justify-content:center;">05 — Unser Symbol</p>
+                    <img src="LOGO.png" alt="Unser Logo" class="logo-big reveal reveal-delay-1">
+                    <h2 class="logo-tagline reveal reveal-delay-2">Ein Herz. Ein Diamant. 💎</h2>
+                    <p class="logo-sub reveal reveal-delay-3">Hart. Kostbar. Unvergänglich.</p>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <!-- 06 RESOLUTIONS ───────────────────────────────────────────── -->
+            <section class="section reveal">
+                <p class="sec-tag">06 — Meine Versprechen an dich</p>
+                <h2 class="sec-heading" style="font-size:clamp(1.6rem,5vw,2.5rem);">Das schwöre ich dir 🤞</h2>
+                <div class="res-list">
+                    <div class="res-item reveal reveal-delay-1">
+                        <span class="res-emoji">🙏</span>
+                        <div>
+                            <p class="res-title">Ich werde dich wirklich wertschätzen</p>
+                            <p class="res-desc">Nie wieder werde ich deine Bemühungen ignorieren. Du verdienst Dankbarkeit — jeden Tag.</p>
+                        </div>
+                    </div>
+                    <div class="res-item reveal reveal-delay-2">
+                        <span class="res-emoji">💬</span>
+                        <div>
+                            <p class="res-title">Ich werde achtsamer mit meinen Worten sein</p>
+                            <p class="res-desc">Was ich damals gesagt habe, war verletzend und unfair. Ich lerne daraus. Wirklich.</p>
+                        </div>
+                    </div>
+                    <div class="res-item reveal reveal-delay-1">
+                        <span class="res-emoji">💪</span>
+                        <div>
+                            <p class="res-title">Ich meine es ernst — diesmal</p>
+                            <p class="res-desc">Nicht nur Worte. Ich möchte es dir mit Taten beweisen — jeden Tag, wenn du mir die Chance gibst.</p>
+                        </div>
+                    </div>
+                    <div class="res-item reveal reveal-delay-2">
+                        <span class="res-emoji">🫀</span>
+                        <div>
+                            <p class="res-title">Ich werde dein Herz respektieren</p>
+                            <p class="res-desc">Deine Grenzen. Deine Zeit. Deine Gefühle. Du bist es wert, so behandelt zu werden.</p>
+                        </div>
+                    </div>
+                    <div class="res-item reveal reveal-delay-1">
+                        <span class="res-emoji">🌱</span>
+                        <div>
+                            <p class="res-title">Ich will wachsen — für uns</p>
+                            <p class="res-desc">Du hast mir gezeigt, was echte Zuneigung bedeutet. Ich will die Person sein, die das erwidert.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- 07 MAIBAUM FLIP CARD ─────────────────────────────────────── -->
+            <div id="maibaum" style="padding:72px 28px;background:linear-gradient(180deg,transparent,rgba(245,250,235,0.4),transparent);">
+                <div class="maibaum-inner">
+                    <p class="sec-tag reveal" style="justify-content:center;">07 — Ein Bekenntnis zu dir</p>
+                    <h2 class="sec-heading reveal" style="font-size:clamp(1.6rem,5vw,2.4rem);">Der Maibaum 🌳</h2>
+                    <p class="sec-body reveal" style="max-width:460px;margin:0 auto;">In der kölschen Tradition ist der Maibaum ein Zeichen der Zuneigung — ein Versprechen vor aller Welt. Ich habe diesen für dich gezeichnet. Mit deinem Namen auf dem Herzen. 🎀</p>
+                    <div class="maibaum-hint reveal reveal-delay-1">
+                        <span class="maibaum-hint-dot"></span>
+                        Doppelt tippen, um das Geheimnis zu enthüllen 🎨
+                    </div>
+                    <div class="flip-wrap reveal reveal-delay-2" id="flipCard" ondblclick="flipCard()" ontouchstart="handleTouch(event)">
+                        <div class="flip-inner" id="flipInner">
+                            <div class="flip-front">
+                                <img src="Maibaum.png" alt="Maibaum für Kilian">
+                            </div>
+                            <div class="flip-back">
+                                <video id="btsVideo" src="behindmaibaum.mp4" loop playsinline muted></video>
+                                <div class="flip-back-overlay">🎨 Behind the Scenes · Wie er entstand</div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="maibaum-caption reveal reveal-delay-3">Gezeichnet von mir — nur für dich, Kilian 🌿</p>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <!-- 08 BEHIND THE SCENES ─────────────────────────────────────── -->
+            <div id="bts" style="padding:72px 28px;">
+                <div class="bts-inner">
+                    <p class="sec-tag reveal">08 — Hinter den Kulissen</p>
+                    <h2 class="sec-heading reveal">Behind The Scenes 🎬</h2>
+                    <p class="sec-body reveal" style="max-width:520px;">Diese Seite ist mit echtem Herzblut entstanden — jedes Detail, jeder Satz, jede Zeile Code. Hier siehst du, was dahinter steckt.</p>
+                    <div class="bts-grid">
+                        <div class="bts-card reveal reveal-delay-1">
+                            <video class="bts-video" src="behindcoding.mp4" controls playsinline preload="metadata">
+                                Dein Browser unterstützt kein Video.
+</video>
+                            <div class="bts-caption">
+                                <div class="bts-badge">💾 Coding </div>
+                                <h4>Wie diese Seite gebaut wurde (Teil 1) </h4>
+                                <p>Von der ersten Codezeile bis zum fertigen Kunstwerk — ein Timelapse des Malprozesses. Jedes Detail, jede feine Linie — gezeichnet mit dir im Kopf. 🌹</p>
+                            </div>
+                        </div>
+                        <div class="bts-card reveal reveal-delay-2">
+                            <video class="bts-video" src="behindwebsite.mp4" controls playsinline preload="metadata">
+                                Dein Browser unterstützt kein Video.
+</video>
+                            <div class="bts-caption">
+                                <div class="bts-badge">💻 Website</div>
+                                <h4>Wie diese Seite gebaut wurde (Teil 2)</h4>
+                                <p>Stundenlange Arbeit, unzählige Versuche, immer wieder von vorne — damit diese Seite so aussieht wie du es verdienst. Weil du es wert bist. ❤️‍🩹</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <!-- 09 CTA ───────────────────────────────────────────────────── -->
+            <section id="contact" class="reveal">
+                <div style="max-width:680px;margin:0 auto;padding:90px 28px 80px;">
+                    <p class="sec-tag">09 — Eine Frage</p>
+                    <h2 class="cta-heading">Können wir es<br>noch einmal<br>versuchen? 🥹</h2>
+                    <p class="cta-sub">Du musst jetzt nicht antworten. Kein Druck.<br>Aber ich bin hier — und ich meine es ernst.</p>
+                    <a href="sms:+4916030927000" class="imessage-btn"> <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                            <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z" fill="white"/>
+                        </svg>
+        Schreib mir auf iMessage 🤍 </a>
+                    <p class="cta-note">Tippt → öffnet iMessage direkt · +49 160 3092 700</p>
+                </div>
+            </section>
+            <footer class="reveal">
+                <img src="LOGO.png" alt="Logo">
+                <p>Gemacht mit ♥ — nur für Kilian</p>
+            </footer>
+        </div>
+        <!-- /mainContent -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <script>
+/* ── CONFIG ─────────────────────────────────────────────────────── */
+const ALLOWED_EMAIL = 'kiliantatla@icloud.com';
+const DURATION_MS   = 48 * 60 * 60 * 1000;
+const STORE_KEY     = 'kilian_open_v3';
+
+/* ── EMAILJS SETUP ──────────────────────────────────────────────────
+   So richtest du es ein (kostenlos, kein Server nötig):
+   1. Geh auf https://www.emailjs.com → kostenloses Konto erstellen
+   2. "Add New Service" → Gmail oder iCloud wählen → verbinden
+      → notiere deine SERVICE_ID (z.B. "service_abc123")
+   3. "Email Templates" → "Create New Template"
+      Betreff: "🥹 Kilian hat die Seite geöffnet!"
+      Inhalt:  "{{visitor_name}} hat sich um {{time}} eingeloggt."
+      → notiere deine TEMPLATE_ID (z.B. "template_xyz789")
+   4. "Account" → API Keys → notiere deinen PUBLIC_KEY
+   5. Ersetze unten die drei Platzhalter mit deinen echten Werten.
+────────────────────────────────────────────────────────────────── */
+const EMAILJS_PUBLIC_KEY  = 'Yr4y1C9-dk53ij4zG';
+const EMAILJS_SERVICE_ID  = 'service_c7zlkkm';
+const EMAILJS_TEMPLATE_ID = 'template_44hj5kb';
+
+// EmailJS einmalig initialisieren (muss VOR dem ersten send() passieren)
+if (EMAILJS_PUBLIC_KEY !== 'DEIN_PUBLIC_KEY') {
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+}
+
+function sendVisitorNotification(email) {
+  if (EMAILJS_PUBLIC_KEY === 'DEIN_PUBLIC_KEY') return; // noch nicht konfiguriert
+  try {
+    const now = new Date();
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      visitor_name: email,
+      time: now.toLocaleString('de-DE', { timeZone: 'Europe/Berlin' }),
+      page_url: window.location.href,
+    });
+  } catch(e) { console.log('EmailJS Fehler:', e); }
+}
+
+/* ── GATE ───────────────────────────────────────────────────────── */
+function checkAccess() {
+  const val = document.getElementById('emailInput').value.trim().toLowerCase();
+  const err = document.getElementById('gateError');
+  if (!val) { err.textContent = 'Bitte gib deine E-Mail-Adresse ein.'; return; }
+  if (val !== ALLOWED_EMAIL.toLowerCase()) {
+    err.textContent = 'Diese Seite ist nicht für dich bestimmt. 🙁'; return;
+  }
+  err.textContent = '';
+  const isFirstOpen = !localStorage.getItem(STORE_KEY);
+  if (isFirstOpen) {
+    localStorage.setItem(STORE_KEY, Date.now().toString());
+    sendVisitorNotification(val); // ← E-Mail an dich
+  }
+  openSite();
+}
+
+document.getElementById('emailInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkAccess(); });
+
+window.addEventListener('DOMContentLoaded', () => {
+  const stored = localStorage.getItem(STORE_KEY);
+  if (stored) {
+    if (Date.now() - parseInt(stored) >= DURATION_MS) showExpired();
+    else openSite();
+  }
+});
+
+function openSite() {
+  document.getElementById('gate').style.display        = 'none';
+  document.getElementById('mainContent').style.display = 'block';
+  document.getElementById('timerPill').style.display   = 'block';
+  document.getElementById('bottomNav').style.display   = 'flex';
+  startTimer(); startHearts(); startReveal();
+  initMusicVolume();
+}
+
+/* ── TIMER ──────────────────────────────────────────────────────── */
+function startTimer() {
+  function tick() {
+    const stored = parseInt(localStorage.getItem(STORE_KEY) || Date.now());
+    const rem    = DURATION_MS - (Date.now() - stored);
+    if (rem <= 0) { showExpired(); return; }
+    const h = Math.floor(rem / 3600000);
+    const m = Math.floor((rem % 3600000) / 60000);
+    const s = Math.floor((rem % 60000) / 1000);
+    document.getElementById('timerText').textContent =
+      String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    setTimeout(tick, 1000);
+  }
+  tick();
+}
+
+function showExpired() {
+  ['gate','mainContent','timerPill','bottomNav','musicPanel'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  document.getElementById('expired').style.display = 'flex';
+}
+
+/* ── FLOATING HEARTS ────────────────────────────────────────────── */
+function startHearts() {
+  const c = document.getElementById('heartsCanvas');
+  const h = ['🩷','🤍','💗','💕','🫧','✨','💝','🌸','🥹'];
+  function spawn() {
+    const el = document.createElement('div');
+    el.className = 'fheart';
+    el.textContent = h[Math.floor(Math.random() * h.length)];
+    el.style.left   = (Math.random() * 100) + 'vw';
+    el.style.fontSize = (10 + Math.random() * 14) + 'px';
+    el.style.animationDuration  = (10 + Math.random() * 10) + 's';
+    el.style.animationDelay     = (Math.random() * 2) + 's';
+    c.appendChild(el);
+    setTimeout(() => el.remove(), 24000);
+  }
+  for (let i = 0; i < 5; i++) setTimeout(spawn, i * 600);
+  setInterval(spawn, 3200);
+}
+
+/* ── SCROLL REVEAL ──────────────────────────────────────────────── */
+function startReveal() {
+  const els = document.querySelectorAll('.reveal');
+  const io  = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  els.forEach(el => io.observe(el));
+}
+
+/* ── BOTTOM NAV ─────────────────────────────────────────────────── */
+let musicPanelOpen = false;
+
+function navTo(id, btn) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  btn.classList.add('active');
+  if (musicPanelOpen) closeMusicPanel();
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function toggleMusicPanel(btn) {
+  if (musicPanelOpen) {
+    closeMusicPanel();
+    btn.classList.remove('active','music-active');
+  } else {
+    openMusicPanel();
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    btn.classList.add('active','music-active');
+  }
+}
+
+function openMusicPanel() {
+  const p = document.getElementById('musicPanel');
+  p.style.display = 'block';
+  requestAnimationFrame(() => p.classList.add('open'));
+  musicPanelOpen = true;
+}
+
+function closeMusicPanel() {
+  const p = document.getElementById('musicPanel');
+  p.classList.remove('open');
+  setTimeout(() => { if (!musicPanelOpen) p.style.display = 'none'; }, 350);
+  musicPanelOpen = false;
+}
+
+/* ── MUSIC ──────────────────────────────────────────────────────── */
+const audio     = document.getElementById('bgMusic');
+let isPlaying   = false;
+
+function initMusicVolume() {
+  audio.volume = 0.65;
+}
+
+function toggleMusic() {
+  if (isPlaying) {
+    audio.pause();
+    document.getElementById('playBtn').textContent = '▶';
+    isPlaying = false;
+  } else {
+    audio.play().catch(() => {});
+    document.getElementById('playBtn').textContent = '⏸';
+    isPlaying = true;
+  }
+}
+
+function seekMusic(sec) {
+  audio.currentTime = Math.max(0, audio.currentTime + sec);
+}
+
+function setVolume(v) {
+  audio.volume = parseFloat(v);
+}
+
+/* ── FLIP CARD ──────────────────────────────────────────────────── */
+let lastTap  = 0;
+let isFlipped = false;
+
+function flipCard() {
+  const card = document.getElementById('flipCard');
+  const vid  = document.getElementById('btsVideo');
+  isFlipped = !isFlipped;
+  card.classList.toggle('flipped', isFlipped);
+  if (isFlipped) vid.play().catch(() => {});
+  else           { vid.pause(); vid.currentTime = 0; }
+}
+
+function handleTouch(e) {
+  const now = Date.now();
+  if (now - lastTap < 350) { e.preventDefault(); flipCard(); }
+  lastTap = now;
+}
+
+/* ── CLOSE MUSIC PANEL ON OUTSIDE CLICK ────────────────────────── */
+document.addEventListener('click', e => {
+  if (musicPanelOpen &&
+      !document.getElementById('musicPanel').contains(e.target) &&
+      !document.getElementById('musicNavItem').contains(e.target)) {
+    closeMusicPanel();
+    document.getElementById('musicNavItem').classList.remove('active','music-active');
+  }
+});
+</script>
+    </body>
+</html>
